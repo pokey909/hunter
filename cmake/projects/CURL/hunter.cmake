@@ -98,6 +98,29 @@ hunter_add_version(
     c15efe3c6c77c5f5d5b098b73d31cc3fbbc0d2fc
 )
 
+hunter_add_version(
+    PACKAGE_NAME
+    CURL
+    VERSION
+    "7.69.1"
+    URL
+    "https://github.com/pokey909/curl/archive/v7.69.1.tar.gz"
+    SHA1
+    ad449a9c062fc6e27994f55423a664174f5341bd
+)
+
+hunter_add_version(
+    PACKAGE_NAME
+    CURL
+    VERSION
+    "7.71.0"
+    URL
+    "https://github.com/pokey909/curl/archive/v7.71.0.tar.gz"
+    SHA1
+    2a5850a9f602f812c6caa8fe34696e0f5f5601f3
+)
+
+
 if (ANDROID OR IOS OR RASPBERRY_PI OR OPENWRT)
   set(_curl_cmake_args
       HAVE_FSETXATTR_5=0
@@ -115,16 +138,29 @@ else()
   set(_curl_cmake_args "")
 endif()
 
-hunter_cmake_args(
+if(APPLE)
+  hunter_cmake_args(
     CURL
     CMAKE_ARGS
-        BUILD_CURL_TESTS=OFF
+        BUILD_CURL_EXE=OFF
+        CMAKE_USE_SECTRANSP=ON
+        CMAKE_USE_LIBSSH2=OFF
+        BUILD_TESTING=OFF
+        CURL_CA_PATH=none
+	HTTP_ONLY=ON
+        ${_curl_cmake_args}
+  )
+else()
+  hunter_cmake_args(
+    CURL
+    CMAKE_ARGS
         BUILD_CURL_EXE=OFF
         CMAKE_USE_OPENSSL=ON
         CMAKE_USE_LIBSSH2=OFF
         BUILD_TESTING=OFF
         ${_curl_cmake_args}
-)
+  )
+endif()
 
 hunter_pick_scheme(DEFAULT url_sha1_cmake)
 hunter_cacheable(CURL)
