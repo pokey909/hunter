@@ -131,7 +131,7 @@ foreach(variant @IPHONEOS_ARCHS@ @IPHONESIMULATOR_ARCHS@)
       CONFIGURE_COMMAND
       ./Configure
       "${configure_opts}"
-      "${noasm}"
+      ${noasm}
       "no-async"
       "--prefix=@HUNTER_PACKAGE_INSTALL_PREFIX@"
       "-arch ${variant}"
